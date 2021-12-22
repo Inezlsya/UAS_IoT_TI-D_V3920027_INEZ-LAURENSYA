@@ -5,20 +5,20 @@
 
 #include <EtherCard.h>
 
-#define STATIC 1  // set to 1 to disable DHCP (adjust myip/gwip values below)
+#define STATIC 1  // set ke 1 untuk menonaktifkan DHCP (sesuaikan nilai myip/gwip di bawah)
 
 #if STATIC
-// ethernet interface ip address
+// alamat ip antarmuka ethernet
 static byte myip[] = { 192,168,1,200 };
-// gateway ip address
+// alamat ip gateway
 static byte gwip[] = { 192,168,1,1 };
 #endif
 
-// ethernet mac address - must be unique on your network
+// alamat mac ethernet - harus unik 
 static byte mymac[] = { 0x74,0x69,0x69,0x2D,0x30,0x31 };
 
-byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
-
+byte Ethernet::buffer[500]; // tcp/ip mengirim dan menerima buffer
+// teks yang akan ditampilkan kedalam website
 const char page[] PROGMEM =
 "HTTP/1.0 503 My Service \r\n"
 "Content-Type: text/html\r\n"
@@ -42,7 +42,7 @@ void setup(){
   Serial.begin(9600);
   Serial.println("\n[backSoon]");
 
-  // Change 'SS' to your Slave Select pin, if you arn't using the default pin
+  // mengubah 'SS' ke pin Slave Select , jika  tidak menggunakan pin default
   if (ether.begin(sizeof Ethernet::buffer, mymac, 10) == 0)
     Serial.println( "Failed to access Ethernet controller");
 #if STATIC
@@ -58,7 +58,7 @@ void setup(){
 }
 
 void loop(){
-  // wait for an incoming TCP packet, but ignore its contents
+  // tunggu paket TCP masuk
   if (ether.packetLoop(ether.packetReceive())) {
     memcpy_P(ether.tcpOffset(), page, sizeof page);
     ether.httpServerReply(sizeof page - 1);
